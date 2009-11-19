@@ -5,6 +5,7 @@ import ar.noxit.security.interceptors.commands.ConditionBasedCommand;
 import ar.noxit.security.interceptors.impl.CGLibInterceptor;
 import ar.noxit.security.mocks.ITestService;
 import ar.noxit.security.mocks.MockTestService;
+import java.lang.reflect.Method;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -32,7 +33,7 @@ public class ConditionBasedCommandTest {
                     }
 
                     @Override
-                    protected boolean shouldInvokeProxy() {
+                    protected boolean shouldInvokeProxy(Method method) {
                         return true;
                     }
                 });
@@ -58,7 +59,7 @@ public class ConditionBasedCommandTest {
                     }
 
                     @Override
-                    protected boolean shouldInvokeProxy() {
+                    protected boolean shouldInvokeProxy(Method method) {
                         return false;
                     }
                 });

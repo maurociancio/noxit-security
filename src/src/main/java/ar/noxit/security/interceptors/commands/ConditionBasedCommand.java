@@ -10,7 +10,7 @@ public abstract class ConditionBasedCommand<T> extends SimpleProxyCommand<T> {
 
     @Override
     public Object intercept(T obj, Method method, Object[] args) throws Throwable {
-        if (this.shouldInvokeProxy()) {
+        if (this.shouldInvokeProxy(method)) {
             return super.intercept(obj, method, args);
         } else {
             return this.onInvocationDenied();
@@ -19,5 +19,5 @@ public abstract class ConditionBasedCommand<T> extends SimpleProxyCommand<T> {
 
     abstract protected Object onInvocationDenied() throws Throwable;
 
-    abstract protected boolean shouldInvokeProxy();
+    abstract protected boolean shouldInvokeProxy(Method method);
 }
