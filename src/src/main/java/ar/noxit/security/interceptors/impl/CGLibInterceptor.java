@@ -12,6 +12,10 @@ public class CGLibInterceptor implements Interceptor {
     @Override
     @SuppressWarnings("unchecked")
     public <T> T interceptInterface(Class<T> interfaze, final InterceptorCommand<T> command) {
+        if (command == null) {
+            throw new IllegalArgumentException("InterceptorCommand cannot be null");
+        }
+
         Class<?> interfaces[] = new Class<?>[]{interfaze};
 
         return (T) Enhancer.create(interfaze, interfaces, new MethodInterceptor() {
