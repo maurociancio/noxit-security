@@ -1,6 +1,6 @@
-package ar.noxit.security.mocks;
+package ar.noxit.security.mocks.services;
 
-public class MockTestService implements ITestService {
+public class MockTestService implements TestService {
 
     private int timesInvoked = 0;
 

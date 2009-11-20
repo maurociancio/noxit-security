@@ -3,8 +3,8 @@ package ar.noxit.security.tests;
 import ar.noxit.security.interceptors.Interceptor;
 import ar.noxit.security.interceptors.commands.ConditionBasedCommand;
 import ar.noxit.security.interceptors.impl.CGLibInterceptor;
-import ar.noxit.security.mocks.ITestService;
-import ar.noxit.security.mocks.MockTestService;
+import ar.noxit.security.mocks.services.TestService;
+import ar.noxit.security.mocks.services.MockTestService;
 import java.lang.reflect.Method;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,9 +23,9 @@ public class ConditionBasedCommandTest {
     public void testConditionBasedProxyIsCalled() {
         MockTestService mockTestService = new MockTestService();
 
-        ITestService service = this.interceptor.interceptInterface(
-                ITestService.class,
-                new ConditionBasedCommand<ITestService>(mockTestService) {
+        TestService service = this.interceptor.interceptInterface(
+                TestService.class,
+                new ConditionBasedCommand<TestService>(mockTestService) {
 
                     @Override
                     protected Object onInvocationDenied() throws Throwable {
@@ -49,9 +49,9 @@ public class ConditionBasedCommandTest {
     public void testConditionBasedProxyIsNotCalled() {
         MockTestService mockTestService = new MockTestService();
 
-        ITestService service = this.interceptor.interceptInterface(
-                ITestService.class,
-                new ConditionBasedCommand<ITestService>(mockTestService) {
+        TestService service = this.interceptor.interceptInterface(
+                TestService.class,
+                new ConditionBasedCommand<TestService>(mockTestService) {
 
                     @Override
                     protected Object onInvocationDenied() throws Throwable {
