@@ -28,7 +28,7 @@ public class ConditionBasedCommandTest {
                 new ConditionBasedCommand<TestService>(mockTestService) {
 
                     @Override
-                    protected Object onInvocationDenied() throws Throwable {
+                    protected Object onInvocationDenied(Method method) throws Throwable {
                         throw new IllegalStateException("Should never be called.");
                     }
 
@@ -54,7 +54,7 @@ public class ConditionBasedCommandTest {
                 new ConditionBasedCommand<TestService>(mockTestService) {
 
                     @Override
-                    protected Object onInvocationDenied() throws Throwable {
+                    protected Object onInvocationDenied(Method method) throws Throwable {
                         throw new IllegalStateException("Should be raised.");
                     }
 

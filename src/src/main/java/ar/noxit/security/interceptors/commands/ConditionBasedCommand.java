@@ -13,11 +13,11 @@ public abstract class ConditionBasedCommand<T> extends SimpleProxyCommand<T> {
         if (this.shouldInvokeProxy(method)) {
             return super.intercept(obj, method, args);
         } else {
-            return this.onInvocationDenied();
+            return this.onInvocationDenied(method);
         }
     }
 
-    abstract protected Object onInvocationDenied() throws Throwable;
+    abstract protected Object onInvocationDenied(Method method) throws Throwable;
 
     abstract protected boolean shouldInvokeProxy(Method method);
 }
