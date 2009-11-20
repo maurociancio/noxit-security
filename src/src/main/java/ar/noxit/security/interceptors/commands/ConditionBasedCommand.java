@@ -1,5 +1,6 @@
 package ar.noxit.security.interceptors.commands;
 
+import ar.noxit.security.exceptions.AuthException;
 import java.lang.reflect.Method;
 
 public abstract class ConditionBasedCommand<T> extends SimpleProxyCommand<T> {
@@ -10,14 +11,15 @@ public abstract class ConditionBasedCommand<T> extends SimpleProxyCommand<T> {
 
     @Override
     public Object intercept(T obj, Method method, Object[] args) throws Throwable {
-        if (this.shouldInvokeProxy(method)) {
+        try {
+            this.checkInvokeProxy(method);
             return super.intercept(obj, method, args);
-        } else {
-            return this.onInvocationDenied(method);
+        } catch (AuthException e) {
+            return this.onInvocationDenied(method, e);
         }
     }
 
-    abstract protected Object onInvocationDenied(Method method) throws Throwable;
+    abstract protected Object onInvocationDenied(Method method, AuthException cause) throws AuthException;
 
-    abstract protected boolean shouldInvokeProxy(Method method);
+    abstract protected void checkInvokeProxy(Method method) throws AuthException;
 }

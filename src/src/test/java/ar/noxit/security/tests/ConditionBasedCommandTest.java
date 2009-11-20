@@ -1,5 +1,7 @@
 package ar.noxit.security.tests;
 
+import ar.noxit.security.exceptions.AuthException;
+import ar.noxit.security.exceptions.NotAuthenticatedException;
 import ar.noxit.security.interceptors.Interceptor;
 import ar.noxit.security.interceptors.commands.ConditionBasedCommand;
 import ar.noxit.security.interceptors.impl.CGLibInterceptor;
@@ -28,13 +30,12 @@ public class ConditionBasedCommandTest {
                 new ConditionBasedCommand<TestService>(mockTestService) {
 
                     @Override
-                    protected Object onInvocationDenied(Method method) throws Throwable {
-                        throw new IllegalStateException("Should never be called.");
+                    protected Object onInvocationDenied(Method method, AuthException cause) {
+                        throw new IllegalStateException("Should never be called.", cause);
                     }
 
                     @Override
-                    protected boolean shouldInvokeProxy(Method method) {
-                        return true;
+                    protected void checkInvokeProxy(Method method) {
                     }
                 });
 
@@ -54,13 +55,13 @@ public class ConditionBasedCommandTest {
                 new ConditionBasedCommand<TestService>(mockTestService) {
 
                     @Override
-                    protected Object onInvocationDenied(Method method) throws Throwable {
-                        throw new IllegalStateException("Should be raised.");
+                    protected Object onInvocationDenied(Method method, AuthException cause) throws AuthException {
+                        throw new IllegalStateException("Should be raised.", cause);
                     }
 
                     @Override
-                    protected boolean shouldInvokeProxy(Method method) {
-                        return false;
+                    protected void checkInvokeProxy(Method method) throws AuthException {
+                        throw new NotAuthenticatedException();
                     }
                 });
 
