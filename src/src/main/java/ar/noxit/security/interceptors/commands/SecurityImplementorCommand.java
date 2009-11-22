@@ -20,6 +20,24 @@ public class SecurityImplementorCommand<T> extends TemplateSecurityImplementorCo
 
     @Override
     protected void authorizate(Class<T> interfaze, Method method) throws AuthException {
+        // look for authenticate annotation
+        Authenticate authenticateAnnotation = getAuthenticateAnnotation(interfaze, method);
+
+        // instantiate authorizer
+        Authorizer authorizer = instantiateAuthorizer(authenticateAnnotation);
+
+        // look for roles
+        String[] rolesFrom = getRolesFrom(method);
+
+        // try to authorize action
+        authorizer.authorize(rolesFrom);
+    }
+
+    @Override
+    protected void checkPermissions() {
+    }
+
+    private Authenticate getAuthenticateAnnotation(Class<T> interfaze, Method method) throws NotAuthenticatedException {
         // look for class based or method based authentication annotation
         Authenticate classAuthenticateAnnotation = interfaze.getAnnotation(Authenticate.class);
         Authenticate methodAuthenticateAnnotation = method.getAnnotation(Authenticate.class);
@@ -35,14 +53,7 @@ public class SecurityImplementorCommand<T> extends TemplateSecurityImplementorCo
                 ? methodAuthenticateAnnotation
                 : classAuthenticateAnnotation;
 
-        Authorizer authorizer = instantiateAuthorizer(authenticateAnnotation);
-        String[] rolesFrom = getRolesFrom(method);
-
-        authorizer.authorize(rolesFrom);
-    }
-
-    @Override
-    protected void checkPermissions() {
+        return authenticateAnnotation;
     }
 
     private Authorizer instantiateAuthorizer(Authenticate authenticateAnnotation) {
