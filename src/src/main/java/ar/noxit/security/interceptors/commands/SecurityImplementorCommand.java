@@ -35,12 +35,10 @@ public class SecurityImplementorCommand<T> extends TemplateSecurityImplementorCo
                 ? methodAuthenticateAnnotation
                 : classAuthenticateAnnotation;
 
-
         Authorizer authorizer = instantiateAuthorizer(authenticateAnnotation);
+        String[] rolesFrom = getRolesFrom(method);
 
-        Rol rolAnnotation = method.getAnnotation(Rol.class);
-
-        authorizer.authorize(getRolesFrom(rolAnnotation));
+        authorizer.authorize(rolesFrom);
     }
 
     @Override
@@ -56,6 +54,11 @@ public class SecurityImplementorCommand<T> extends TemplateSecurityImplementorCo
             throw new AuthRuntimeException("Cannot instantiate " +
                     authorizer.getName() + " using the default constructor", ex);
         }
+    }
+
+    private String[] getRolesFrom(Method method) {
+        Rol rolAnnotation = method.getAnnotation(Rol.class);
+        return getRolesFrom(rolAnnotation);
     }
 
     private String[] getRolesFrom(Rol rol) {
