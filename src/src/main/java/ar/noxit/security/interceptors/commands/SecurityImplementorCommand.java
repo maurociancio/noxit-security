@@ -28,9 +28,10 @@ public class SecurityImplementorCommand<T> extends TemplateSecurityImplementorCo
                     interfaze.getName() + "] has authentication annotation.");
         }
 
-        Authenticate authenticateAnnotation = classAuthenticateAnnotation != null
-                ? classAuthenticateAnnotation
-                : methodAuthenticateAnnotation;
+        // choose method annotation if both are present
+        Authenticate authenticateAnnotation = methodAuthenticateAnnotation != null
+                ? methodAuthenticateAnnotation
+                : classAuthenticateAnnotation;
 
 
         Authorizer authorizer = instantiateAuthorizer(authenticateAnnotation);
