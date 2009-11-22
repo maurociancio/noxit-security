@@ -20,9 +20,11 @@ public class SecurityImplementorCommand<T> extends TemplateSecurityImplementorCo
 
     @Override
     protected void authorizate(Class<T> interfaze, Method method) throws AuthException {
+        // look for class based or method based authentication annotation
         Authenticate classAuthenticateAnnotation = interfaze.getAnnotation(Authenticate.class);
         Authenticate methodAuthenticateAnnotation = method.getAnnotation(Authenticate.class);
 
+        // raise an exception if both annotations are null
         if (methodAuthenticateAnnotation == null && classAuthenticateAnnotation == null) {
             throw new NotAuthenticatedException("Neither method=[" + method.getName() + "] nor clazz=[" +
                     interfaze.getName() + "] has authentication annotation.");
