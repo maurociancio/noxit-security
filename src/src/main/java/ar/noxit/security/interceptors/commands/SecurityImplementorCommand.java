@@ -24,7 +24,8 @@ public class SecurityImplementorCommand<T> extends TemplateSecurityImplementorCo
         Authenticate methodAuthenticateAnnotation = method.getAnnotation(Authenticate.class);
 
         if (methodAuthenticateAnnotation == null && classAuthenticateAnnotation == null) {
-            throw new NotAuthenticatedException();
+            throw new NotAuthenticatedException("Neither method=[" + method.getName() + "] nor clazz=[" +
+                    interfaze.getName() + "] has authentication annotation.");
         }
 
         Authenticate authenticateAnnotation = classAuthenticateAnnotation != null
