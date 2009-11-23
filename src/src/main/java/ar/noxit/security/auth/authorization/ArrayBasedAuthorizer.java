@@ -35,12 +35,7 @@ public class ArrayBasedAuthorizer implements Authorizer {
     }
 
     protected Authorizer getEmptyRolesStrategy() {
-        return new Authorizer() {
-
-            @Override
-            public void authorize(String[] serviceRoles) {
-            }
-        };
+        return new NullAuthorizer();
     }
 
     protected Authorizer getNotEmptyRolesStrategy() {
