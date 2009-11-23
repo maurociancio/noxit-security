@@ -49,9 +49,8 @@ public class SecurityImplementorCommand<T> extends TemplateSecurityImplementorCo
         }
 
         // choose method annotation if both are present
-        Authenticate authenticateAnnotation = methodAuthenticateAnnotation != null
-                ? methodAuthenticateAnnotation
-                : classAuthenticateAnnotation;
+        Authenticate authenticateAnnotation = getWithMethodPriority(methodAuthenticateAnnotation,
+                classAuthenticateAnnotation);
 
         return authenticateAnnotation;
     }
@@ -71,11 +70,14 @@ public class SecurityImplementorCommand<T> extends TemplateSecurityImplementorCo
         Rol methodRolAnnotation = method.getAnnotation(Rol.class);
         Rol classRolAnnotation = interfaze.getAnnotation(Rol.class);
 
-        Rol rolAnnotation = methodRolAnnotation != null
-                ? methodRolAnnotation
-                : classRolAnnotation;
-
+        Rol rolAnnotation = getWithMethodPriority(methodRolAnnotation, classRolAnnotation);
         return getRolesFrom(rolAnnotation);
+    }
+
+    private <U> U getWithMethodPriority(U method, U clazz) {
+        return method != null
+                ? method
+                : clazz;
     }
 
     private String[] getRolesFrom(Rol rol) {
