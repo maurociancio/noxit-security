@@ -9,7 +9,7 @@ import java.util.List;
 
 public class ArrayBasedAuthorizer implements Authorizer {
 
-    private String[] roles;
+    private final String[] roles;
 
     public ArrayBasedAuthorizer(String[] roles) {
         if (roles == null) {
