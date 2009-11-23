@@ -21,14 +21,14 @@ public class AuthenticationTest {
     }
 
     @Authenticate(authorizer = NullAuthorizer.class)
-    public interface Service1 {
+    public interface ServiceWithNullAuthorizer {
 
         int service();
     }
 
     @Test
     public void authenticateWithANullAuthenticator() {
-        Service1 service = security.secure(Service1.class, new Service1() {
+        ServiceWithNullAuthorizer service = security.secure(ServiceWithNullAuthorizer.class, new ServiceWithNullAuthorizer() {
 
             @Override
             public int service() {
@@ -40,14 +40,14 @@ public class AuthenticationTest {
     }
 
     @Authenticate(authorizer = FailureAuthorizer.class)
-    public interface Service2 {
+    public interface ServiceWithFailureAuthorizer {
 
         void service() throws NotAuthenticatedException;
     }
 
     @Test(expected = NotAuthenticatedException.class)
     public void authenticateWithAuthenticatorThatFails() throws NotAuthenticatedException {
-        Service2 service = security.secure(Service2.class, new Service2() {
+        ServiceWithFailureAuthorizer service = security.secure(ServiceWithFailureAuthorizer.class, new ServiceWithFailureAuthorizer() {
 
             @Override
             public void service() {
