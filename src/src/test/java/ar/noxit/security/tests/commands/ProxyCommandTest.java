@@ -1,4 +1,4 @@
-package ar.noxit.security.tests;
+package ar.noxit.security.tests.commands;
 
 import ar.noxit.security.interceptors.Interceptor;
 import ar.noxit.security.interceptors.commands.SimpleProxyCommand;

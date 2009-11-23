@@ -1,4 +1,4 @@
-package ar.noxit.security.tests;
+package ar.noxit.security.tests.commands;
 
 import ar.noxit.security.exceptions.AuthException;
 import ar.noxit.security.exceptions.NotAuthenticatedException;

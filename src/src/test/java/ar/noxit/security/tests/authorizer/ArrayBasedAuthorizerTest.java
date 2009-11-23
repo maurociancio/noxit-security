@@ -1,4 +1,4 @@
-package ar.noxit.security.tests;
+package ar.noxit.security.tests.authorizer;
 
 import ar.noxit.security.auth.Authorizer;
 import ar.noxit.security.auth.authorization.ArrayBasedAuthorizer;
