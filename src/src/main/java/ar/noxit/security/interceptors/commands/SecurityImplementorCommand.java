@@ -27,7 +27,7 @@ public class SecurityImplementorCommand<T> extends TemplateSecurityImplementorCo
         Authorizer authorizer = instantiateAuthorizer(authenticateAnnotation);
 
         // look for roles
-        String[] rolesFrom = getRolesFrom(method);
+        String[] rolesFrom = getRolesFrom(interfaze, method);
 
         // try to authorize action
         authorizer.authorize(rolesFrom);
@@ -67,8 +67,14 @@ public class SecurityImplementorCommand<T> extends TemplateSecurityImplementorCo
         }
     }
 
-    private String[] getRolesFrom(Method method) {
-        Rol rolAnnotation = method.getAnnotation(Rol.class);
+    private String[] getRolesFrom(Class<T> interfaze, Method method) {
+        Rol methodRolAnnotation = method.getAnnotation(Rol.class);
+        Rol classRolAnnotation = interfaze.getAnnotation(Rol.class);
+
+        Rol rolAnnotation = methodRolAnnotation != null
+                ? methodRolAnnotation
+                : classRolAnnotation;
+
         return getRolesFrom(rolAnnotation);
     }
 
