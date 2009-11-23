@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
 
 @Target({TYPE, METHOD})
 @Retention(RUNTIME)
-public @interface Authenticate {
+public @interface Auth {
 
     Class<? extends Authorizer> authorizer() default NullAuthorizer.class;
 

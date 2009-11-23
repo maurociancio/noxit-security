@@ -1,6 +1,6 @@
 package ar.noxit.security.interceptors.commands;
 
-import ar.noxit.security.annotations.Authenticate;
+import ar.noxit.security.annotations.Auth;
 import ar.noxit.security.annotations.Rol;
 import ar.noxit.security.auth.Authorizer;
 import ar.noxit.security.exceptions.AuthException;
@@ -21,7 +21,7 @@ public class SecurityImplementorCommand<T> extends TemplateSecurityImplementorCo
     @Override
     protected void authorizate(Class<T> interfaze, Method method) throws AuthException {
         // look for authenticate annotation
-        Authenticate authenticateAnnotation = getAuthenticateAnnotation(interfaze, method);
+        Auth authenticateAnnotation = getAuthenticateAnnotation(interfaze, method);
 
         // instantiate authorizer
         Authorizer authorizer = instantiateAuthorizer(authenticateAnnotation);
@@ -37,10 +37,10 @@ public class SecurityImplementorCommand<T> extends TemplateSecurityImplementorCo
     protected void checkPermissions() {
     }
 
-    private Authenticate getAuthenticateAnnotation(Class<T> interfaze, Method method) throws NotAuthenticatedException {
+    private Auth getAuthenticateAnnotation(Class<T> interfaze, Method method) throws NotAuthenticatedException {
         // look for class based or method based authentication annotation
-        Authenticate classAuthenticateAnnotation = interfaze.getAnnotation(Authenticate.class);
-        Authenticate methodAuthenticateAnnotation = method.getAnnotation(Authenticate.class);
+        Auth classAuthenticateAnnotation = interfaze.getAnnotation(Auth.class);
+        Auth methodAuthenticateAnnotation = method.getAnnotation(Auth.class);
 
         // raise an exception if both annotations are null
         if (methodAuthenticateAnnotation == null && classAuthenticateAnnotation == null) {
@@ -49,13 +49,13 @@ public class SecurityImplementorCommand<T> extends TemplateSecurityImplementorCo
         }
 
         // choose method annotation if both are present
-        Authenticate authenticateAnnotation = getWithMethodPriority(methodAuthenticateAnnotation,
+        Auth authenticateAnnotation = getWithMethodPriority(methodAuthenticateAnnotation,
                 classAuthenticateAnnotation);
 
         return authenticateAnnotation;
     }
 
-    private Authorizer instantiateAuthorizer(Authenticate authenticateAnnotation) {
+    private Authorizer instantiateAuthorizer(Auth authenticateAnnotation) {
         Class<? extends Authorizer> authorizer = authenticateAnnotation.authorizer();
 
         try {
