@@ -15,8 +15,11 @@ public class SecurityImpl implements Security {
     }
 
     @Override
-    public <T> T secure(final Class<T> interfaze, T proxied) {
-        return interceptor.interceptInterface(interfaze,
-                new SecurityImplementorCommand<T>(interfaze, proxied));
+    public <T> T secure(Class<T> interfaze, T proxied) {
+        return interceptor.interceptInterface(interfaze, getInterceptorCommand(interfaze, proxied));
+    }
+
+    protected <T> SecurityImplementorCommand<T> getInterceptorCommand(Class<T> interfaze, T proxied) {
+        return new SecurityImplementorCommand<T>(interfaze, proxied);
     }
 }
