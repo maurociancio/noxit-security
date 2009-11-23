@@ -21,7 +21,7 @@ public class AuthenticationAndRolTest {
     }
 
     @Authenticate(authorizer = CreateRolAuthorizer.class)
-    public interface Service1 {
+    public interface ServiceWithCreateRol {
 
         @Rol(roles = {"create"})
         int service();
@@ -29,7 +29,7 @@ public class AuthenticationAndRolTest {
 
     @Test
     public void authenticateWithExistingRol() {
-        Service1 service = security.secure(Service1.class, new Service1() {
+        ServiceWithCreateRol service = security.secure(ServiceWithCreateRol.class, new ServiceWithCreateRol() {
 
             @Override
             public int service() {
@@ -41,7 +41,7 @@ public class AuthenticationAndRolTest {
     }
 
     @Authenticate(authorizer = CreateRolAuthorizer.class)
-    public interface Service2 {
+    public interface ServiceWithNotCreateRol {
 
         @Rol(roles = {"not-create"})
         int service();
@@ -49,7 +49,7 @@ public class AuthenticationAndRolTest {
 
     @Test(expected = NotAuthenticatedException.class)
     public void authenticateWithNotExistingRol() {
-        Service2 service = security.secure(Service2.class, new Service2() {
+        ServiceWithNotCreateRol service = security.secure(ServiceWithNotCreateRol.class, new ServiceWithNotCreateRol() {
 
             @Override
             public int service() {
