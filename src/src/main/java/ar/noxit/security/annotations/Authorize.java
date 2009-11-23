@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 
 @Target({TYPE, METHOD})
 @Retention(RUNTIME)
-public @interface Auth {
+public @interface Authorize {
 
     Class<? extends Authorizer> authorizer() default NullAuthorizer.class;
 }

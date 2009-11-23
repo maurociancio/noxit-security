@@ -3,7 +3,7 @@ package ar.noxit.security.tests;
 import ar.noxit.security.Security;
 import ar.noxit.security.SecurityImpl;
 import ar.noxit.security.interceptors.impl.CGLibInterceptor;
-import ar.noxit.security.annotations.Auth;
+import ar.noxit.security.annotations.Authorize;
 import ar.noxit.security.annotations.Rol;
 import ar.noxit.security.exceptions.NotAuthenticatedException;
 import ar.noxit.security.mocks.CreateRolAuthorizer;
@@ -21,7 +21,7 @@ public class AuthenticationAndRolTest {
     }
 
     /********************************************************************************************************/
-    @Auth(authorizer = CreateRolAuthorizer.class)
+    @Authorize(authorizer = CreateRolAuthorizer.class)
     public interface ServiceWithCreateRol {
 
         @Rol(roles = {"create"})
@@ -42,7 +42,7 @@ public class AuthenticationAndRolTest {
     }
 
     /********************************************************************************************************/
-    @Auth(authorizer = CreateRolAuthorizer.class)
+    @Authorize(authorizer = CreateRolAuthorizer.class)
     public interface ServiceWithNotCreateRol {
 
         @Rol(roles = {"not-create"})
@@ -63,7 +63,7 @@ public class AuthenticationAndRolTest {
     }
 
     /********************************************************************************************************/
-    @Auth(authorizer = CreateRolAuthorizer.class)
+    @Authorize(authorizer = CreateRolAuthorizer.class)
     public interface ServiceWithoutRol {
 
         int service();
@@ -83,7 +83,7 @@ public class AuthenticationAndRolTest {
     }
 
     /********************************************************************************************************/
-    @Auth(authorizer = CreateRolAuthorizer.class)
+    @Authorize(authorizer = CreateRolAuthorizer.class)
     @Rol(roles = "create")
     public interface ServiceWithClassRol {
 
@@ -104,7 +104,7 @@ public class AuthenticationAndRolTest {
     }
 
     /********************************************************************************************************/
-    @Auth(authorizer = CreateRolAuthorizer.class)
+    @Authorize(authorizer = CreateRolAuthorizer.class)
     @Rol(roles = "create")
     public interface ServiceWithClassAndMethodRoles {
 
@@ -127,7 +127,7 @@ public class AuthenticationAndRolTest {
     }
 
     /********************************************************************************************************/
-    @Auth(authorizer = CreateRolAuthorizer.class)
+    @Authorize(authorizer = CreateRolAuthorizer.class)
     @Rol(roles = "create")
     public interface ServiceWithClassAndMethodThatNotMatch {
 

@@ -6,7 +6,7 @@ import ar.noxit.security.SecurityImpl;
 import ar.noxit.security.exceptions.NotAuthenticatedException;
 import ar.noxit.security.interceptors.impl.CGLibInterceptor;
 import ar.noxit.security.mocks.FailureAuthorizer;
-import ar.noxit.security.annotations.Auth;
+import ar.noxit.security.annotations.Authorize;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -21,7 +21,7 @@ public class AuthenticationTest {
     }
 
     /********************************************************************************************************/
-    @Auth(authorizer = NullAuthorizer.class)
+    @Authorize(authorizer = NullAuthorizer.class)
     public interface ServiceWithNullAuthorizer {
 
         int service();
@@ -41,7 +41,7 @@ public class AuthenticationTest {
     }
 
     /********************************************************************************************************/
-    @Auth(authorizer = FailureAuthorizer.class)
+    @Authorize(authorizer = FailureAuthorizer.class)
     public interface ServiceWithFailureAuthorizer {
 
         void service() throws NotAuthenticatedException;

@@ -1,6 +1,6 @@
 package ar.noxit.security.interceptors.commands;
 
-import ar.noxit.security.annotations.Auth;
+import ar.noxit.security.annotations.Authorize;
 import ar.noxit.security.annotations.Rol;
 import ar.noxit.security.auth.Authorizer;
 import ar.noxit.security.exceptions.AuthException;
@@ -21,7 +21,7 @@ public class SecurityImplementorCommand<T> extends TemplateSecurityImplementorCo
     @Override
     protected void authorizate(Class<T> interfaze, Method method) throws AuthException {
         // look for authenticate annotation
-        Auth authAnnotation = getAuthenticateAnnotation(interfaze, method);
+        Authorize authAnnotation = getAuthenticateAnnotation(interfaze, method);
 
         // instantiate authorizer
         Authorizer authorizer = instantiateAuthorizer(authAnnotation);
@@ -37,10 +37,10 @@ public class SecurityImplementorCommand<T> extends TemplateSecurityImplementorCo
     protected void checkPermissions() {
     }
 
-    private Auth getAuthenticateAnnotation(Class<T> interfaze, Method method) throws NotAuthenticatedException {
+    private Authorize getAuthenticateAnnotation(Class<T> interfaze, Method method) throws NotAuthenticatedException {
         // look for class based or method based authentication annotation
-        Auth classAuthAnnotation = interfaze.getAnnotation(Auth.class);
-        Auth methodAuthAnnotation = method.getAnnotation(Auth.class);
+        Authorize classAuthAnnotation = interfaze.getAnnotation(Authorize.class);
+        Authorize methodAuthAnnotation = method.getAnnotation(Authorize.class);
 
         // raise an exception if both annotations are null
         if (methodAuthAnnotation == null && classAuthAnnotation == null) {
@@ -52,7 +52,7 @@ public class SecurityImplementorCommand<T> extends TemplateSecurityImplementorCo
         return getWithMethodPriority(methodAuthAnnotation, classAuthAnnotation);
     }
 
-    private Authorizer instantiateAuthorizer(Auth authAnnotation) {
+    private Authorizer instantiateAuthorizer(Authorize authAnnotation) {
         Class<? extends Authorizer> authorizer = authAnnotation.authorizer();
 
         try {
