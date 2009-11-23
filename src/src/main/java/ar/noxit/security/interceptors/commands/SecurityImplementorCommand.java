@@ -21,16 +21,16 @@ public class SecurityImplementorCommand<T> extends TemplateSecurityImplementorCo
     @Override
     protected void authorizate(Class<T> interfaze, Method method) throws AuthException {
         // look for authenticate annotation
-        Auth authenticateAnnotation = getAuthenticateAnnotation(interfaze, method);
+        Auth authAnnotation = getAuthenticateAnnotation(interfaze, method);
 
         // instantiate authorizer
-        Authorizer authorizer = instantiateAuthorizer(authenticateAnnotation);
+        Authorizer authorizer = instantiateAuthorizer(authAnnotation);
 
         // look for roles
-        String[] rolesFrom = getRolesFrom(interfaze, method);
+        String[] roles = getRolesFrom(interfaze, method);
 
         // try to authorize action
-        authorizer.authorize(rolesFrom);
+        authorizer.authorize(roles);
     }
 
     @Override
@@ -39,24 +39,23 @@ public class SecurityImplementorCommand<T> extends TemplateSecurityImplementorCo
 
     private Auth getAuthenticateAnnotation(Class<T> interfaze, Method method) throws NotAuthenticatedException {
         // look for class based or method based authentication annotation
-        Auth classAuthenticateAnnotation = interfaze.getAnnotation(Auth.class);
-        Auth methodAuthenticateAnnotation = method.getAnnotation(Auth.class);
+        Auth classAuthAnnotation = interfaze.getAnnotation(Auth.class);
+        Auth methodAuthAnnotation = method.getAnnotation(Auth.class);
 
         // raise an exception if both annotations are null
-        if (methodAuthenticateAnnotation == null && classAuthenticateAnnotation == null) {
+        if (methodAuthAnnotation == null && classAuthAnnotation == null) {
             throw new NotAuthenticatedException("Neither method=[" + method.getName() + "] nor clazz=[" +
                     interfaze.getName() + "] has authentication annotation.");
         }
 
         // choose method annotation if both are present
-        Auth authenticateAnnotation = getWithMethodPriority(methodAuthenticateAnnotation,
-                classAuthenticateAnnotation);
+        Auth authAnnotation = getWithMethodPriority(methodAuthAnnotation, classAuthAnnotation);
 
-        return authenticateAnnotation;
+        return authAnnotation;
     }
 
-    private Authorizer instantiateAuthorizer(Auth authenticateAnnotation) {
-        Class<? extends Authorizer> authorizer = authenticateAnnotation.authorizer();
+    private Authorizer instantiateAuthorizer(Auth authAnnotation) {
+        Class<? extends Authorizer> authorizer = authAnnotation.authorizer();
 
         try {
             return authorizer.newInstance();
