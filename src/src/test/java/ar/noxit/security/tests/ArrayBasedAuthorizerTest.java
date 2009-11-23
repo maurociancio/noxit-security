@@ -4,9 +4,7 @@ import ar.noxit.security.auth.Authorizer;
 import ar.noxit.security.auth.authorization.ArrayBasedAuthorizer;
 import ar.noxit.security.exceptions.AuthException;
 import ar.noxit.security.exceptions.NotAuthenticatedException;
-import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 public class ArrayBasedAuthorizerTest {
 
