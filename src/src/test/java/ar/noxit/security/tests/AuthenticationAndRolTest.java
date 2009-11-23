@@ -61,4 +61,24 @@ public class AuthenticationAndRolTest {
 
         service.service();
     }
+
+    /********************************************************************************************************/
+    @Auth(authorizer = CreateRolAuthorizer.class)
+    public interface ServiceWithoutRol {
+
+        int service();
+    }
+
+    @Test
+    public void authenticateWithoutRol() {
+        ServiceWithoutRol service = security.secure(ServiceWithoutRol.class, new ServiceWithoutRol() {
+
+            @Override
+            public int service() {
+                return 1;
+            }
+        });
+
+        assertEquals(service.service(), 1);
+    }
 }

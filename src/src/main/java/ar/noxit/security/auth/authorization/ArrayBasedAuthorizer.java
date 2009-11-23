@@ -27,15 +27,38 @@ public class ArrayBasedAuthorizer implements Authorizer {
 
     @Override
     public void authorize(String[] serviceRoles) throws NotAuthenticatedException {
-        List<String> rolesList = getRoles();
-        List<String> serviceRolesList = getServiceRoles(serviceRoles);
+        Authorizer strategy = serviceRoles.length > 0
+                ? getNotEmptyRolesStrategy()
+                : getEmptyRolesStrategy();
 
-        rolesList.retainAll(serviceRolesList);
+        strategy.authorize(serviceRoles);
+    }
 
-        if (rolesList.isEmpty()) {
-            throw new NotAuthenticatedException("Not authorized to complete this action because the " +
-                    "roles do not match (required=[" + roles + "] provided=[" + serviceRoles + "])");
-        }
+    protected Authorizer getEmptyRolesStrategy() {
+        return new Authorizer() {
+
+            @Override
+            public void authorize(String[] serviceRoles) {
+            }
+        };
+    }
+
+    protected Authorizer getNotEmptyRolesStrategy() {
+        return new Authorizer() {
+
+            @Override
+            public void authorize(String[] serviceRoles) throws NotAuthenticatedException {
+                List<String> rolesList = getRoles();
+                List<String> serviceRolesList = getServiceRoles(serviceRoles);
+
+                rolesList.retainAll(serviceRolesList);
+
+                if (rolesList.isEmpty()) {
+                    throw new NotAuthenticatedException("Not authorized to complete this action because the " +
+                            "roles do not match (required=[" + roles + "] provided=[" + serviceRoles + "])");
+                }
+            }
+        };
     }
 
     private List<String> getRoles() {
