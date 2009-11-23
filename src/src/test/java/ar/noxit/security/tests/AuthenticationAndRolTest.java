@@ -81,4 +81,71 @@ public class AuthenticationAndRolTest {
 
         assertEquals(service.service(), 1);
     }
+
+    /********************************************************************************************************/
+    @Auth(authorizer = CreateRolAuthorizer.class)
+    @Rol(roles = "create")
+    public interface ServiceWithClassRol {
+
+        int service();
+    }
+
+    @Test
+    public void authenticateWithClassRoles() {
+        ServiceWithClassRol service = security.secure(ServiceWithClassRol.class, new ServiceWithClassRol() {
+
+            @Override
+            public int service() {
+                return 1;
+            }
+        });
+
+        assertEquals(service.service(), 1);
+    }
+
+    /********************************************************************************************************/
+    @Auth(authorizer = CreateRolAuthorizer.class)
+    @Rol(roles = "create")
+    public interface ServiceWithClassAndMethodRoles {
+
+        @Rol(roles = "create")
+        int service();
+    }
+
+    @Test
+    public void authenticateWithClassAndMethodRoles() {
+        ServiceWithClassAndMethodRoles service = security.secure(ServiceWithClassAndMethodRoles.class,
+                new ServiceWithClassAndMethodRoles() {
+
+                    @Override
+                    public int service() {
+                        return 1;
+                    }
+                });
+
+        assertEquals(service.service(), 1);
+    }
+
+    /********************************************************************************************************/
+    @Auth(authorizer = CreateRolAuthorizer.class)
+    @Rol(roles = "create")
+    public interface ServiceWithClassAndMethodThatNotMatch {
+
+        @Rol(roles = "not-create")
+        int service();
+    }
+
+    @Test(expected = NotAuthenticatedException.class)
+    public void authenticateWithClassAndeMthodRolesThatNotMatch() {
+        ServiceWithClassAndMethodThatNotMatch service = security.secure(ServiceWithClassAndMethodThatNotMatch.class,
+                new ServiceWithClassAndMethodThatNotMatch() {
+
+                    @Override
+                    public int service() {
+                        return 1;
+                    }
+                });
+
+        service.service();
+    }
 }
