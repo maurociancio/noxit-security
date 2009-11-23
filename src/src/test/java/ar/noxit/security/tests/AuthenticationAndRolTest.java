@@ -20,6 +20,7 @@ public class AuthenticationAndRolTest {
         security = new SecurityImpl(new CGLibInterceptor());
     }
 
+    /********************************************************************************************************/
     @Auth(authorizer = CreateRolAuthorizer.class)
     public interface ServiceWithCreateRol {
 
@@ -40,6 +41,7 @@ public class AuthenticationAndRolTest {
         assertEquals(service.service(), 1);
     }
 
+    /********************************************************************************************************/
     @Auth(authorizer = CreateRolAuthorizer.class)
     public interface ServiceWithNotCreateRol {
 

@@ -20,6 +20,7 @@ public class AuthenticationTest {
         security = new SecurityImpl(new CGLibInterceptor());
     }
 
+    /********************************************************************************************************/
     @Auth(authorizer = NullAuthorizer.class)
     public interface ServiceWithNullAuthorizer {
 
@@ -39,6 +40,7 @@ public class AuthenticationTest {
         assertEquals(service.service(), 1);
     }
 
+    /********************************************************************************************************/
     @Auth(authorizer = FailureAuthorizer.class)
     public interface ServiceWithFailureAuthorizer {
 
