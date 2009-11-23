@@ -49,9 +49,7 @@ public class SecurityImplementorCommand<T> extends TemplateSecurityImplementorCo
         }
 
         // choose method annotation if both are present
-        Auth authAnnotation = getWithMethodPriority(methodAuthAnnotation, classAuthAnnotation);
-
-        return authAnnotation;
+        return getWithMethodPriority(methodAuthAnnotation, classAuthAnnotation);
     }
 
     private Authorizer instantiateAuthorizer(Auth authAnnotation) {
