@@ -1,6 +1,7 @@
 package ar.noxit.security;
 
 import ar.noxit.security.interceptors.Interceptor;
+import ar.noxit.security.interceptors.InterceptorCommand;
 import ar.noxit.security.interceptors.commands.SecurityImplementorCommand;
 
 public class SecurityImpl implements Security {
@@ -19,7 +20,7 @@ public class SecurityImpl implements Security {
         return interceptor.interceptInterface(interfaze, getInterceptorCommand(interfaze, proxied));
     }
 
-    protected <T> SecurityImplementorCommand<T> getInterceptorCommand(Class<T> interfaze, T proxied) {
+    protected <T> InterceptorCommand<T> getInterceptorCommand(Class<T> interfaze, T proxied) {
         return new SecurityImplementorCommand<T>(interfaze, proxied);
     }
 }
