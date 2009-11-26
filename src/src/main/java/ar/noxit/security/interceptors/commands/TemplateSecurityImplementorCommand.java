@@ -27,7 +27,7 @@ public abstract class TemplateSecurityImplementorCommand<T> extends ConditionBas
 
     @Override
     protected Object onInvocationDenied(Method method, AuthException cause) throws AuthException {
-        throw new NotAuthenticatedException("Not authenticated to complete this action class=[" +
+        throw new NotAuthenticatedException("Not access to complete this action class=[" +
                 interfaze.getName() + "] method=[" + method.getName() + "]", cause);
     }
 
