@@ -3,7 +3,7 @@ package ar.noxit.security.tests.authorizer;
 import ar.noxit.security.auth.Authorizer;
 import ar.noxit.security.auth.authorization.ArrayBasedAuthorizer;
 import ar.noxit.security.exceptions.AuthException;
-import ar.noxit.security.exceptions.NotAuthenticatedException;
+import ar.noxit.security.exceptions.NotAuthorizatedException;
 import org.junit.Test;
 
 public class ArrayBasedAuthorizerTest {
@@ -26,14 +26,14 @@ public class ArrayBasedAuthorizerTest {
         this.authorizer.authorize(new String[]{"modify"});
     }
 
-    @Test(expected = NotAuthenticatedException.class)
+    @Test(expected = NotAuthorizatedException.class)
     public void testFailUsingArrayForArrayBasedAuthorizer() throws AuthException {
         this.authorizer = new ArrayBasedAuthorizer(new String[]{"read", "modify"});
 
         this.authorizer.authorize(new String[]{"erase"});
     }
 
-    @Test(expected = NotAuthenticatedException.class)
+    @Test(expected = NotAuthorizatedException.class)
     public void testFailArrayBasedAuthorizer() throws AuthException {
         this.authorizer = new ArrayBasedAuthorizer("list");
 

@@ -1,8 +1,8 @@
 package ar.noxit.security.auth;
 
-import ar.noxit.security.exceptions.NotAuthenticatedException;
+import ar.noxit.security.exceptions.NotAuthorizatedException;
 
 public interface Authorizer {
 
-    void authorize(String[] serviceRoles) throws NotAuthenticatedException;
+    void authorize(String[] serviceRoles) throws NotAuthorizatedException;
 }

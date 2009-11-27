@@ -1,7 +1,7 @@
 package ar.noxit.security.auth.authorization;
 
 import ar.noxit.security.auth.Authorizer;
-import ar.noxit.security.exceptions.NotAuthenticatedException;
+import ar.noxit.security.exceptions.NotAuthorizatedException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -26,7 +26,7 @@ public class ArrayBasedAuthorizer implements Authorizer {
     }
 
     @Override
-    public void authorize(String[] serviceRoles) throws NotAuthenticatedException {
+    public void authorize(String[] serviceRoles) throws NotAuthorizatedException {
         Authorizer strategy = serviceRoles.length > 0
                 ? getNotEmptyRolesStrategy()
                 : getEmptyRolesStrategy();
@@ -42,14 +42,14 @@ public class ArrayBasedAuthorizer implements Authorizer {
         return new Authorizer() {
 
             @Override
-            public void authorize(String[] serviceRoles) throws NotAuthenticatedException {
+            public void authorize(String[] serviceRoles) throws NotAuthorizatedException {
                 List<String> rolesList = getRoles();
                 List<String> serviceRolesList = getServiceRoles(serviceRoles);
 
                 rolesList.retainAll(serviceRolesList);
 
                 if (rolesList.isEmpty()) {
-                    throw new NotAuthenticatedException("Not authorized to complete this action because the " +
+                    throw new NotAuthorizatedException("Not authorized to complete this action because the " +
                             "roles do not match (required=[" + roles + "] provided=[" + serviceRoles + "])");
                 }
             }
