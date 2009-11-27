@@ -5,7 +5,7 @@ import ar.noxit.security.annotations.Rol;
 import ar.noxit.security.auth.Authenticator;
 import ar.noxit.security.exceptions.AuthException;
 import ar.noxit.security.exceptions.NoRolException;
-import ar.noxit.security.exceptions.NotAuthenticatedException;
+import ar.noxit.security.exceptions.NotAuthorizatedException;
 import java.lang.reflect.Method;
 
 public class AnnotationsFinder {
@@ -30,8 +30,8 @@ public class AnnotationsFinder {
 
         // raise an exception if both annotations are null
         if (methodAuthAnnotation == null && classAuthAnnotation == null) {
-            throw new NotAuthenticatedException("Neither method=[" + method.getName() + "] nor class=[" +
-                    interfaze.getName() + "] has authentication annotation.");
+            throw new NotAuthorizatedException("Neither method=[" + method.getName() + "] nor class=[" +
+                    interfaze.getName() + "] has authorize annotation.");
         }
 
         // choose method annotation if both are present
