@@ -1,7 +1,9 @@
 package ar.noxit.security.interceptors.commands;
 
+import ar.noxit.security.annotations.Authenticate;
 import ar.noxit.security.annotations.Authorize;
 import ar.noxit.security.annotations.Rol;
+import ar.noxit.security.auth.Authenticator;
 import ar.noxit.security.auth.Authorizer;
 import ar.noxit.security.exceptions.AuthException;
 import ar.noxit.security.exceptions.AuthRuntimeException;
@@ -19,7 +21,15 @@ public class SecurityImplementorCommand<T> extends TemplateSecurityImplementorCo
     }
 
     @Override
-    protected void authenticate(Class<T> interfaze, Method method) {
+    protected void authenticate(Class<T> interfaze, Method method) throws AuthException {
+        // look for authenticate annotation
+        Authenticate authenticate = annotationsFinder.getAuthenticator(method);
+
+        // instantiate authenticator
+        Authenticator authenticator = instantiateAuthenticator(authenticate);
+
+        // try to authenticate user
+        authenticator.authenticate();
     }
 
     @Override
