@@ -5,13 +5,17 @@ import ar.noxit.security.annotations.Rol;
 import ar.noxit.security.auth.Authorizer;
 import ar.noxit.security.exceptions.AuthException;
 import ar.noxit.security.exceptions.AuthRuntimeException;
-import ar.noxit.security.exceptions.NotAuthenticatedException;
+import ar.noxit.security.exceptions.NoRolException;
 import java.lang.reflect.Method;
 
 public class SecurityImplementorCommand<T> extends TemplateSecurityImplementorCommand<T> {
 
+    private AnnotationsFinder annotationsFinder;
+
     public SecurityImplementorCommand(Class<T> interfaze, T proxied) {
         super(interfaze, proxied);
+
+        this.annotationsFinder = new AnnotationsFinder(interfaze);
     }
 
     @Override
@@ -21,13 +25,20 @@ public class SecurityImplementorCommand<T> extends TemplateSecurityImplementorCo
     @Override
     protected void authorizate(Class<T> interfaze, Method method) throws AuthException {
         // look for authenticate annotation
-        Authorize authAnnotation = getAuthenticateAnnotation(interfaze, method);
+        Authorize authorize = annotationsFinder.getAuthorizer(method);
 
         // instantiate authorizer
-        Authorizer authorizer = instantiateAuthorizer(authAnnotation);
+        Authorizer authorizer = instantiateAuthorizer(authorize);
 
         // look for roles
-        String[] roles = getRolesFrom(interfaze, method);
+        Rol rol = null;
+        try {
+            rol = annotationsFinder.getRol(method);
+        } catch (NoRolException ignore) {
+        }
+
+        // string roles
+        String[] roles = getRolesFrom(rol);
 
         // try to authorize action
         authorizer.authorize(roles);
@@ -35,21 +46,6 @@ public class SecurityImplementorCommand<T> extends TemplateSecurityImplementorCo
 
     @Override
     protected void checkPermissions() {
-    }
-
-    private Authorize getAuthenticateAnnotation(Class<T> interfaze, Method method) throws NotAuthenticatedException {
-        // look for class based or method based authentication annotation
-        Authorize classAuthAnnotation = interfaze.getAnnotation(Authorize.class);
-        Authorize methodAuthAnnotation = method.getAnnotation(Authorize.class);
-
-        // raise an exception if both annotations are null
-        if (methodAuthAnnotation == null && classAuthAnnotation == null) {
-            throw new NotAuthenticatedException("Neither method=[" + method.getName() + "] nor clazz=[" +
-                    interfaze.getName() + "] has authentication annotation.");
-        }
-
-        // choose method annotation if both are present
-        return getWithMethodPriority(methodAuthAnnotation, classAuthAnnotation);
     }
 
     private Authorizer instantiateAuthorizer(Authorize authAnnotation) {
@@ -61,20 +57,6 @@ public class SecurityImplementorCommand<T> extends TemplateSecurityImplementorCo
             throw new AuthRuntimeException("Cannot instantiate " +
                     authorizer.getName() + " using the default constructor", ex);
         }
-    }
-
-    private String[] getRolesFrom(Class<T> interfaze, Method method) {
-        Rol methodRolAnnotation = method.getAnnotation(Rol.class);
-        Rol classRolAnnotation = interfaze.getAnnotation(Rol.class);
-
-        Rol rolAnnotation = getWithMethodPriority(methodRolAnnotation, classRolAnnotation);
-        return getRolesFrom(rolAnnotation);
-    }
-
-    private <U> U getWithMethodPriority(U method, U clazz) {
-        return method != null
-                ? method
-                : clazz;
     }
 
     private String[] getRolesFrom(Rol rol) {
