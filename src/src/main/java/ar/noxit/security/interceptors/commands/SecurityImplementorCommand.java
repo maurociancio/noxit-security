@@ -50,13 +50,7 @@ public class SecurityImplementorCommand<T> extends TemplateSecurityImplementorCo
 
     private Authorizer instantiateAuthorizer(Authorize authAnnotation) {
         Class<? extends Authorizer> authorizer = authAnnotation.authorizer();
-
-        try {
-            return authorizer.newInstance();
-        } catch (Exception ex) {
-            throw new AuthRuntimeException("Cannot instantiate " +
-                    authorizer.getName() + " using the default constructor", ex);
-        }
+        return instantiate(authorizer);
     }
 
     private String[] getRolesFrom(Rol rol) {
@@ -64,6 +58,20 @@ public class SecurityImplementorCommand<T> extends TemplateSecurityImplementorCo
             return new String[0];
         } else {
             return rol.roles();
+        }
+    }
+
+    private Authenticator instantiateAuthenticator(Authenticate authenticate) {
+        Class<? extends Authenticator> authenticator = authenticate.authenticator();
+        return instantiate(authenticator);
+    }
+
+    private <U> U instantiate(Class<U> clazz) {
+        try {
+            return clazz.newInstance();
+        } catch (Exception ex) {
+            throw new AuthRuntimeException("Cannot instantiate " +
+                    clazz.getName() + " using the default constructor", ex);
         }
     }
 }
