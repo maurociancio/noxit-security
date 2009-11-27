@@ -24,7 +24,7 @@ public class SecurityImplementorCommand<T> extends TemplateSecurityImplementorCo
 
     @Override
     protected void authorizate(Class<T> interfaze, Method method) throws AuthException {
-        // look for authenticate annotation
+        // look for authorize annotation
         Authorize authorize = annotationsFinder.getAuthorizer(method);
 
         // instantiate authorizer
