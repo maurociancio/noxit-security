@@ -3,6 +3,7 @@ package ar.noxit.security.tests;
 import ar.noxit.security.Security;
 import ar.noxit.security.mocks.NullAuthorizer;
 import ar.noxit.security.SecurityImpl;
+import ar.noxit.security.annotations.Authenticate;
 import ar.noxit.security.exceptions.NotAuthenticatedException;
 import ar.noxit.security.interceptors.impl.CGLibInterceptor;
 import ar.noxit.security.mocks.FailureAuthorizer;
@@ -21,6 +22,7 @@ public class AuthenticationTest {
     }
 
     /********************************************************************************************************/
+    @Authenticate
     @Authorize(authorizer = NullAuthorizer.class)
     public interface ServiceWithNullAuthorizer {
 
@@ -41,6 +43,7 @@ public class AuthenticationTest {
     }
 
     /********************************************************************************************************/
+    @Authenticate
     @Authorize(authorizer = FailureAuthorizer.class)
     public interface ServiceWithFailureAuthorizer {
 
