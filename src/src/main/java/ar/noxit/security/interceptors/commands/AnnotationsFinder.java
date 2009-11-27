@@ -24,7 +24,7 @@ public class AnnotationsFinder {
     }
 
     public Authorize getAuthorizer(Method method) throws AuthException {
-        // look for class based or method based authentication annotation
+        // look for class based or method based authorize annotation
         Authorize classAuthAnnotation = interfaze.getAnnotation(Authorize.class);
         Authorize methodAuthAnnotation = method.getAnnotation(Authorize.class);
 
