@@ -20,7 +20,7 @@ import java.lang.annotation.Target;
 public @interface Authorize {
 
     /**
-     * Specify which class should do the authorization
+     * Specify what class should do the authorization.
      *
      * @return Authorizer
      */

@@ -20,7 +20,7 @@ import java.lang.annotation.Target;
 public @interface Authenticate {
 
     /**
-     * Specify which class should do the authentication
+     * Specify what class should do the authentication.
      *
      * @return Authenticator
      */
