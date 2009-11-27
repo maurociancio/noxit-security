@@ -20,7 +20,7 @@ public abstract class TemplateSecurityImplementorCommand<T> extends ConditionBas
 
     @Override
     protected void checkInvokeProxy(Method method) throws AuthException {
-        authenticate();
+        authenticate(interfaze, method);
         authorizate(interfaze, method);
         checkPermissions();
     }
@@ -31,7 +31,7 @@ public abstract class TemplateSecurityImplementorCommand<T> extends ConditionBas
                 interfaze.getName() + "] method=[" + method.getName() + "]", cause);
     }
 
-    protected abstract void authenticate();
+    protected abstract void authenticate(Class<T> interfaze, Method method) throws AuthException;
 
     protected abstract void authorizate(Class<T> interfaze, Method method) throws AuthException;
 

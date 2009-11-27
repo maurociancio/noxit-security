@@ -19,7 +19,7 @@ public class SecurityImplementorCommand<T> extends TemplateSecurityImplementorCo
     }
 
     @Override
-    protected void authenticate() {
+    protected void authenticate(Class<T> interfaze, Method method) {
     }
 
     @Override
