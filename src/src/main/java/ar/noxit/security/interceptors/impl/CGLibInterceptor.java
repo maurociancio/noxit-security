@@ -15,6 +15,9 @@ public class CGLibInterceptor implements Interceptor {
         if (command == null) {
             throw new IllegalArgumentException("InterceptorCommand cannot be null");
         }
+        if (interfaze == null) {
+            throw new IllegalArgumentException("Interfaze cannot be null");
+        }
 
         Class<?> interfaces[] = new Class<?>[]{interfaze};
 
