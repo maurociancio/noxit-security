@@ -41,11 +41,7 @@ public class SecurityImplementorCommand<T> extends TemplateSecurityImplementorCo
         Authorizer authorizer = instantiateAuthorizer(authorize);
 
         // look for roles
-        Rol rol = null;
-        try {
-            rol = annotationsFinder.getRol(method);
-        } catch (NoRolException ignore) {
-        }
+        Rol rol = getRol(method);
 
         // string roles
         String[] roles = getRolesFrom(rol);
@@ -56,6 +52,14 @@ public class SecurityImplementorCommand<T> extends TemplateSecurityImplementorCo
 
     @Override
     protected void checkPermissions() {
+    }
+
+    private Rol getRol(Method method) throws AuthException {
+        try {
+            return annotationsFinder.getRol(method);
+        } catch (NoRolException ignore) {
+            return null;
+        }
     }
 
     private Authorizer instantiateAuthorizer(Authorize authAnnotation) {
